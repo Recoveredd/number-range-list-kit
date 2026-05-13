@@ -50,7 +50,7 @@ export type NumberRangeListResult =
       warnings: NumberRangeIssue[];
     };
 
-const PART_PATTERN = /^([+-]?\d+)(?:\s*(?:-|\.{2,3}|…|‥|⋯)\s*([+-]?\d+))?$/u;
+const PART_PATTERN = /^([+-]?\d+)(?:\s*(?:-|–|—|\.{2,3}|…|‥|⋯)\s*([+-]?\d+))?$/u;
 const DEFAULT_MAX_EXPANDED_VALUES = 1000;
 
 export function parseNumberRangeList(input: unknown, options: NumberRangeListOptions = {}): NumberRangeListResult {
@@ -145,6 +145,10 @@ export function parseNumberRangeList(input: unknown, options: NumberRangeListOpt
 export function expandNumberRangeList(input: unknown, options: NumberRangeListOptions = {}): number[] | null {
   const result = parseNumberRangeList(input, { ...options, expand: true });
   return result.ok ? result.values : null;
+}
+
+export function isNumberRangeList(input: unknown, options: NumberRangeListOptions = {}): boolean {
+  return parseNumberRangeList(input, options).ok;
 }
 
 export function formatNumberRangeList(segments: readonly NumberRangeSegment[]): string {

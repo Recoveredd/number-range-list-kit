@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { expandNumberRangeList, formatNumberRangeList, parseNumberRangeList } from "../src/index.js";
+import { expandNumberRangeList, formatNumberRangeList, isNumberRangeList, parseNumberRangeList } from "../src/index.js";
 
 describe("number-range-list-kit", () => {
   it("parses and expands ascending, descending, and unicode ranges", () => {
-    const result = parseNumberRangeList("1, 3-5, 10..8, 20‥22");
+    const result = parseNumberRangeList("1, 3-5, 10..8, 20‥22, 30–31, 40—41");
 
     expect(result.ok).toBe(true);
-    expect(result.values).toEqual([1, 3, 4, 5, 10, 9, 8, 20, 21, 22]);
+    expect(result.values).toEqual([1, 3, 4, 5, 10, 9, 8, 20, 21, 22, 30, 31, 40, 41]);
     expect(result.warnings.map((warning) => warning.code)).toEqual(["descending_range"]);
   });
 
@@ -99,5 +99,12 @@ describe("number-range-list-kit", () => {
     expect(formatNumberRangeList(result.segments)).toBe("-2--1,4");
     expect(expandNumberRangeList("7...9")).toEqual([7, 8, 9]);
     expect(expandNumberRangeList("bad")).toBeNull();
+  });
+
+  it("offers a boolean validation helper for forms", () => {
+    expect(isNumberRangeList("1, 3-5")).toBe(true);
+    expect(isNumberRangeList("5-3", { allowDescending: false })).toBe(false);
+    expect(isNumberRangeList("1-100000", { maxExpandedValues: 5 })).toBe(false);
+    expect(isNumberRangeList("1-100000", { maxExpandedValues: Number.NaN })).toBe(false);
   });
 });

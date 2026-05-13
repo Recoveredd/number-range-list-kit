@@ -29,7 +29,7 @@ npm install number-range-list-kit
 ## Quick Start
 
 ```ts
-import { expandNumberRangeList, parseNumberRangeList } from "number-range-list-kit";
+import { expandNumberRangeList, isNumberRangeList, parseNumberRangeList } from "number-range-list-kit";
 
 const parsed = parseNumberRangeList("1, 3-5, 10..8");
 
@@ -48,6 +48,9 @@ expandNumberRangeList("1, 3-5");
 
 expandNumberRangeList("bad");
 // null
+
+isNumberRangeList("1, 3-5");
+// true
 ```
 
 ## Why not just another numeric range parser?
@@ -137,6 +140,20 @@ expandNumberRangeList("1, 3-5");
 // [1, 3, 4, 5]
 ```
 
+### `isNumberRangeList(input, options?)`
+
+Returns `true` when the input parses without errors under the provided options. It is useful for simple form validation.
+
+```ts
+import { isNumberRangeList } from "number-range-list-kit";
+
+isNumberRangeList("1, 3-5");
+// true
+
+isNumberRangeList("5-3", { allowDescending: false });
+// false
+```
+
 ### `formatNumberRangeList(segments)`
 
 Formats parsed segments back into compact `1,3-5` form.
@@ -186,7 +203,7 @@ if (!result.ok) {
 - Single integers: `1`, `-4`, `+8`.
 - Hyphen ranges: `1-3`, `-3--1`, `1 - -3`.
 - Dot ranges: `1..3`, `1...3`.
-- Unicode range separators: `1…3`, `1‥3`, `1⋯3`.
+- Unicode range separators: `1…3`, `1‥3`, `1⋯3`, `1–3`, `1—3`.
 - Descending ranges: `5-3`.
 - Comma-separated parts with optional whitespace.
 
