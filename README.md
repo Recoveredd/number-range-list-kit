@@ -161,6 +161,7 @@ Diagnostics are designed for UI display.
 | `not_a_string` | Runtime input was not a string. |
 | `empty_part` | A comma-separated part was empty. |
 | `invalid_part` | A part was not an integer or supported range. |
+| `unsafe_integer` | A bound cannot be represented as a safe JavaScript integer. |
 | `descending_range` | A descending range was accepted and will expand high-to-low. |
 | `descending_range_disabled` | A descending range was rejected by `allowDescending: false`. |
 | `invalid_max_expanded_values` | `maxExpandedValues` was not a finite integer greater than or equal to 0. |

@@ -9,6 +9,7 @@ export type NumberRangeIssueCode =
   | "not_a_string"
   | "empty_part"
   | "invalid_part"
+  | "unsafe_integer"
   | "descending_range"
   | "descending_range_disabled"
   | "invalid_max_expanded_values"
@@ -49,7 +50,7 @@ export type NumberRangeListResult =
       warnings: NumberRangeIssue[];
     };
 
-const PART_PATTERN = /^([+-]?\d+)(?:\s*(?:-{1}|\.{2,3}|…|‥|⋯)\s*([+-]?\d+))?$/u;
+const PART_PATTERN = /^([+-]?\d+)(?:\s*(?:-|\.{2,3}|…|‥|⋯)\s*([+-]?\d+))?$/u;
 const DEFAULT_MAX_EXPANDED_VALUES = 1000;
 
 export function parseNumberRangeList(input: unknown, options: NumberRangeListOptions = {}): NumberRangeListResult {
@@ -88,6 +89,19 @@ export function parseNumberRangeList(input: unknown, options: NumberRangeListOpt
 
     const start = Number(match[1]);
     const end = match[2] === undefined ? start : Number(match[2]);
+
+    if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end)) {
+      errors.push(
+        issue(
+          "unsafe_integer",
+          "Range bounds must be safe JavaScript integers.",
+          trimmed.startIndex,
+          trimmed.endIndex
+        )
+      );
+      continue;
+    }
+
     const step = start <= end ? 1 : -1;
 
     if (step === -1 && !allowDescending) {
@@ -224,6 +238,6 @@ function expandSegments(
   return values;
 }
 
-function issue(code: NumberRangeIssue["code"], message: string, startIndex: number, endIndex: number): NumberRangeIssue {
+function issue(code: NumberRangeIssueCode, message: string, startIndex: number, endIndex: number): NumberRangeIssue {
   return { code, message, startIndex, endIndex };
 }

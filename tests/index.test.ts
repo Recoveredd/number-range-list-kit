@@ -73,6 +73,16 @@ describe("number-range-list-kit", () => {
     }
   });
 
+  it("rejects integers that cannot be represented safely", () => {
+    const result = parseNumberRangeList("9007199254740993");
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors[0]?.code).toBe("unsafe_integer");
+      expect(result.segments).toEqual([]);
+    }
+  });
+
   it("supports duplicate warnings and dedupe", () => {
     const result = parseNumberRangeList("1-3,2", { dedupe: true });
 
