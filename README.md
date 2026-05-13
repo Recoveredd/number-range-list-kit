@@ -152,6 +152,12 @@ isNumberRangeList("1, 3-5");
 
 isNumberRangeList("5-3", { allowDescending: false });
 // false
+
+isNumberRangeList("1-100000");
+// false with the default expansion guard
+
+isNumberRangeList("1-100000", { expand: false });
+// true when you only need syntax validation
 ```
 
 ### `formatNumberRangeList(segments)`
