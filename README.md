@@ -1,5 +1,6 @@
 # number-range-list-kit
 
+[![npm version](https://img.shields.io/npm/v/number-range-list-kit.svg)](https://www.npmjs.com/package/number-range-list-kit)
 [![License: MPL-2.0](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](LICENSE)
 [![CI](https://github.com/Recoveredd/number-range-list-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/Recoveredd/number-range-list-kit/actions/workflows/ci.yml)
 
@@ -7,7 +8,7 @@ Parse comma-separated integer range lists such as `1, 3-5, 10..8` into normalize
 
 `number-range-list-kit` is a small clean-room toolkit for browser forms, config editors, dashboards and import flows that need to explain user-entered range lists instead of returning a surprising array.
 
-Links: [Demo](https://packages.wasta-wocket.fr/number-range-list-kit/) · [GitHub](https://github.com/Recoveredd/number-range-list-kit)
+Links: [Demo](https://packages.wasta-wocket.fr/number-range-list-kit/) · [npm](https://www.npmjs.com/package/number-range-list-kit) · [GitHub](https://github.com/Recoveredd/number-range-list-kit)
 
 Use `parse-numeric-range` when you only need a mature array expansion helper. Use `number-range-list-kit` when you need typed diagnostics, source spans, duplicate warnings and a guard against accidentally expanding huge ranges.
 
